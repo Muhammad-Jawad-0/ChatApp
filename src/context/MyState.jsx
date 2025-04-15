@@ -9,6 +9,7 @@ const MyState = ({ children }) => {
   const LoginUserFunction = async () => {
     setUser(true);
     try {
+      console.log("Login Hugya")
     } catch (error) {
       setUser(false);
     }
