@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MyContext from "./MyContext";
 
 const MyState = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("You");
 
   // Login User Function
 
