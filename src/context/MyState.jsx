@@ -7,18 +7,23 @@ const MyState = ({ children }) => {
   // Login User Function
 
   const LoginUserFunction = async () => {
-    setUser(true);
+    setUser("You");
     try {
-      console.log("Login Hugya")
+      console.log("Login Hugya");
     } catch (error) {
       setUser(false);
     }
+  };
+
+  const logout = () => {
+    setUser(null);
   };
 
   const contextObj = {
     user,
     setUser,
     LoginUserFunction,
+    logout
   };
 
   return <MyContext.Provider value={contextObj}>{children}</MyContext.Provider>;
