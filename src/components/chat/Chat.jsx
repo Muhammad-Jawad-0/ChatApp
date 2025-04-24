@@ -1,5 +1,5 @@
 import "./chat.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Avatar from "../../assets/avatar.png";
 import Phone from "../../assets/phone.png";
 import Video from "../../assets/video.png";
@@ -13,7 +13,13 @@ import EmojiPicker from "emoji-picker-react";
 const Chat = () => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const endRef = useRef(null);
 
+
+  /// last chat view
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  },[]);
   console.log(text);
 
   const handleEmoji = (e) => {
@@ -36,7 +42,76 @@ const Chat = () => {
           <img src={Info} alt="" />
         </div>
       </div>
-      <div className="center"></div>
+      <div className="center">
+        <div className="message">
+          <img src={Avatar} alt="" />
+          <div className="texts">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+              veniam, iusto repudiandae facere omnis amet nisi consequuntur eum
+              laboriosam earum.
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        <div className="message own">
+          <div className="texts">
+            <img
+              src="https://agc.creativelive.com/agc/courses/5842-1.jpg"
+              alt=""
+            />
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+              veniam, iusto repudiandae facere omnis amet nisi consequuntur eum
+              laboriosam earum.
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        <div className="message">
+          <img src={Avatar} alt="" />
+          <div className="texts">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+              veniam, iusto repudiandae facere omnis amet nisi consequuntur eum
+              laboriosam earum.
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        <div className="message own">
+          <div className="texts">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+              veniam, iusto repudiandae facere omnis amet nisi consequuntur eum
+              laboriosam earum.
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        <div className="message">
+          <img src={Avatar} alt="" />
+          <div className="texts">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+              veniam, iusto repudiandae facere omnis amet nisi consequuntur eum
+              laboriosam earum.
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        <div className="message own">
+          <div className="texts">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
+              veniam, iusto repudiandae facere omnis amet nisi consequuntur eum
+              laboriosam earum.
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        <div ref={endRef}></div>
+      </div>
       <div className="bottom">
         <div className="icons">
           <img src={Image} alt="" />
