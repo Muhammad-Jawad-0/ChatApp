@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./login.css";
 import Avatar from "../../assets/avatar.png";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [avatar, setAvatar] = useState({
@@ -17,11 +18,16 @@ const Login = () => {
       });
     }
   };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+  };
   return (
     <div className="login">
       <div className="item">
         <h2>Welcome back,</h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <input type="email" name="email" placeholder="Enter Your  email" />
           <input
             type="password"
@@ -31,7 +37,7 @@ const Login = () => {
           <button>Sign In</button>
         </form>
       </div>
-      <div className="separato  h-[80%] w-0.5 border-1 border-[#dddddd35]"></div>
+      <div className="separator h-[80%] w-0.5 border-1 border-[#dddddd35]"></div>
       <div className="item">
         <h2>Create An Account,</h2>
         <form>
