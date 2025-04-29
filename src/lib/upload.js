@@ -8,9 +8,7 @@ import {
 import { useContext } from "react";
 import MyContext from "../context/MyContext";
 
-const upload = async (file) => {
-  const context = useContext(MyContext);
-  const { setImageProgress } = context;
+const upload = async (file ,setImageProgress) => {
   const date = new Date();
   const storageRef = ref(storage, `images/${date}${file.name}`);
 

@@ -14,7 +14,10 @@ import MyContext from "../../context/MyContext";
 
 const Login = () => {
   const context = useContext(MyContext);
-  const { imageprogress } = context;
+  const { imageprogress, setImageProgress } = context;
+
+  console.log(imageprogress, ">>>> imageprogress");
+
   const [avatar, setAvatar] = useState({
     file: null,
     url: "",
@@ -56,7 +59,7 @@ const Login = () => {
         password
       );
 
-      const imageUrl = await upload(avatar.file);
+      const imageUrl = await upload(avatar.file, setImageProgress);
 
       await setDoc(doc(fireDB, "users", responese.user.uid), {
         username,
@@ -117,9 +120,18 @@ const Login = () => {
           />
 
           <button>
-            {(imageprogress > 0 && imageprogress < 100 && (
+            {imageprogress > 0 && imageprogress < 100 ? (
+              <>
+                <p>uploading : {Math.round(imageprogress)}%</p>
+              </>
+            ) : (
+              <>
+                <p>Sign Up</p>
+              </>
+            )}
+            {/* {(imageprogress > 0 && imageprogress < 100 && (
               <p>uploading : {Math.round(imageprogress)}%</p>
-            )) || <>{"Sign Up"}</>}
+            )) || <>{"Sign Up"}</>} */}
           </button>
         </form>
       </div>
