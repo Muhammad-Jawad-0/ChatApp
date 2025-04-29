@@ -3,6 +3,7 @@ import MyContext from "./MyContext";
 
 const MyState = ({ children }) => {
   const [user, setUser] = useState("You");
+  const [imageprogress, setImageProgress] = useState(0);
 
   // Login User Function
 
@@ -23,7 +24,9 @@ const MyState = ({ children }) => {
     user,
     setUser,
     LoginUserFunction,
-    logout
+    logout,
+    imageprogress,
+    setImageProgress,
   };
 
   return <MyContext.Provider value={contextObj}>{children}</MyContext.Provider>;
