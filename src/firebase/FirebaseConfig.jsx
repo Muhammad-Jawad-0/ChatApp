@@ -11,6 +11,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
   signOut,
 } from "firebase/auth";
 import {
@@ -48,6 +49,7 @@ const storage = getStorage(app);
 export {
   fireDB,
   auth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   query,

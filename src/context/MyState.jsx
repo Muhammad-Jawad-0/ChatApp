@@ -4,6 +4,7 @@ import MyContext from "./MyContext";
 const MyState = ({ children }) => {
   const [user, setUser] = useState("You");
   const [imageprogress, setImageProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   // Login User Function
 
@@ -27,6 +28,8 @@ const MyState = ({ children }) => {
     logout,
     imageprogress,
     setImageProgress,
+    loading,
+    setLoading,
   };
 
   return <MyContext.Provider value={contextObj}>{children}</MyContext.Provider>;

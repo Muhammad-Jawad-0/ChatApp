@@ -4,6 +4,7 @@ import Avatar from "../../assets/avatar.png";
 import { toast } from "react-toastify";
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   auth,
   setDoc,
   doc,
@@ -14,9 +15,7 @@ import MyContext from "../../context/MyContext";
 
 const Login = () => {
   const context = useContext(MyContext);
-  const { imageprogress, setImageProgress } = context;
-
-  console.log(imageprogress, ">>>> imageprogress");
+  const { imageprogress, setImageProgress, loading, setLoading } = context;
 
   const [avatar, setAvatar] = useState({
     file: null,
@@ -33,11 +32,25 @@ const Login = () => {
     }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.target);
+    const { email, password } = Object.fromEntries(formData);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Login Successfully")
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRegister = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData(e.target);
 
@@ -77,6 +90,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -90,7 +105,9 @@ const Login = () => {
             name="password"
             placeholder="Enter Your password"
           />
-          <button>Sign In</button>
+          <button disabled={loading}>
+            {loading ? "Loading..." : "Sign In"}
+          </button>
         </form>
       </div>
       <div className="separator h-[80%] w-0.5 border-1 border-[#dddddd35]"></div>
@@ -119,14 +136,14 @@ const Login = () => {
             onChange={handleAvatar}
           />
 
-          <button>
+          <button disabled={loading}>
             {imageprogress > 0 && imageprogress < 100 ? (
               <>
                 <p>uploading : {Math.round(imageprogress)}%</p>
               </>
             ) : (
               <>
-                <p>Sign Up</p>
+                <p>{loading ? "Loading..." : "Sign Up"}</p>
               </>
             )}
             {/* {(imageprogress > 0 && imageprogress < 100 && (
