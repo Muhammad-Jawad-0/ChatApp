@@ -15,11 +15,9 @@ function App() {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.currentUser.currentUser);
 
-
   const userInfoFunc = (id) => {
     try {
       const userInfo = dispatch(fatchUserInfo(id));
-      setUser(userInfo);
     } catch (error) {
       console.log(error);
     }
@@ -27,7 +25,8 @@ function App() {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
-      userInfoFunc(user.uid);
+      userInfoFunc(user?.uid);
+      setUser(user);
     });
 
     return () => {

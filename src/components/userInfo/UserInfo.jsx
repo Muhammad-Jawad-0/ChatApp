@@ -3,13 +3,19 @@ import More from "../../assets/more.png";
 import Video from "../../assets/video.png";
 import Edit from "../../assets/edit.png";
 import Avatar from "../../assets/avatar.png";
+import { useSelector, useDispatch } from "react-redux";
 
 const UserInfo = () => {
+  const userInfo = useSelector((state) => state.currentUser.currentUser);
+
+  console.log("userInfo >>", userInfo);
+
+  const dispatch = useDispatch();
   return (
     <div className="userInfo ">
       <div className="user">
-        <img src={Avatar} alt="" />
-        <h2>Muhammad Jawad</h2>
+        <img src={userInfo?.avatar || Avatar} alt="" />
+        <h2>{userInfo?.username || "loading..."}</h2>
       </div>
       <div className="icons">
         <img src={More} alt="" />

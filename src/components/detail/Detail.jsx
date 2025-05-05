@@ -3,8 +3,14 @@ import Avatar from "../../assets/avatar.png";
 import ArrowUp from "../../assets/arrowup.png";
 import ArrowDown from "../../assets/arrowDown.png";
 import Download from "../../assets/download.png";
+import {auth} from "../../firebase/FirebaseConfig"
+import { toast } from "react-toastify";
 
 const Detail = () => {
+  const logoutFunc = () => {
+    auth.signOut()
+    toast.error("Logout Sucessfully")
+  }
   return (
     <div className="detail">
       <div className="user">
@@ -111,7 +117,7 @@ const Detail = () => {
         </div>
 
         <button>Block User</button>
-        <button className="logout">Logout</button>
+        <button className="logout" onClick={() => logoutFunc()}>Logout</button>
       </div>
     </div>
   );
