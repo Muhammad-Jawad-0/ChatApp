@@ -10,6 +10,7 @@ import {
   collection,
   doc,
   fireDB,
+  getDoc,
   onSnapshot,
   query,
 } from "../../firebase/FirebaseConfig";
@@ -38,13 +39,27 @@ const ChatList = () => {
 
     const unSub = onSnapshot(
       doc(fireDB, "userchats", userInfo.id),
-      async(res) => {
+      async (res) => {
         if (res.exists()) {
-          const items = res.data().chats
+          const items = res.data().chats;
+          const promises = items.map(async (item) => {
+            const userDocRef = doc(fireDB, "users", item.receiverId);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+              const user = userDocSnap.data();
+
+              return { ...item, user };
+            }
+
+            const chatData = await Promise.all(promises);
+            setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+          });
           // setChats(docSnap.data());
-        } else {
-          setChats([]);
         }
+        // else {
+        //   setChats([]);
+        // }
       }
     );
 
