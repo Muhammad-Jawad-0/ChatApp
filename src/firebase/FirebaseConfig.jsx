@@ -27,7 +27,10 @@ import {
   setDoc,
   doc,
   deleteDoc,
-  getDocs
+  getDocs,
+  serverTimestamp,
+  updateDoc,
+  arrayUnion
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -70,5 +73,8 @@ export {
   getDownloadURL,
   deleteObject,
   signOut,
-  getDocs
+  getDocs,
+  serverTimestamp,
+  updateDoc,
+  arrayUnion
 };
