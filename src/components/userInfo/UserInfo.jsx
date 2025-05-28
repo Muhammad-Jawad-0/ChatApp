@@ -8,8 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 const UserInfo = () => {
   const userInfo = useSelector((state) => state.currentUser.currentUser);
 
-  console.log("userInfo >>", userInfo);
-
   const dispatch = useDispatch();
   return (
     <div className="userInfo ">

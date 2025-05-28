@@ -38,7 +38,7 @@ const ChatList = () => {
     if (!userInfo?.id) return;
 
     const unSub = onSnapshot(
-      doc(fireDB, "userchats", userInfo.id),
+      doc(fireDB, "userchats", userInfo?.id),
       async (res) => {
         if (res.exists()) {
           const items = res.data().chats;
@@ -52,18 +52,18 @@ const ChatList = () => {
               return { ...item, user };
             }
 
-            const chatData = await Promise.all(promises);
-            setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+            return null;
           });
-          // setChats(docSnap.data());
+          const chatData = (await Promise.all(promises)).filter(Boolean);
+          console.log(chatData, "<<<< chatData");
+          setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
         }
-        // else {
-        //   setChats([]);
-        // }
       }
     );
 
-    return () => unSub();
+    return () => {
+      unSub();
+    };
   }, [userInfo?.id]);
 
   return (
@@ -80,12 +80,13 @@ const ChatList = () => {
           className="add"
         />
       </div>
+
       {chats.map((v, i) => (
         <div className="item" key={v.chatId}>
-          <img src={v.avatar} alt="" />
+          <img src={v.user.avatar || Avatar} alt="" />
           <div className="text">
-            <span>{v.username}</span>
-            <p>{chats.lastMessage}</p>
+            <span>{v.user.username}</span>
+            <p>{v.lastMessage}</p>
           </div>
         </div>
       ))}

@@ -9,18 +9,31 @@ import Image from "../../assets/img.png";
 import Camera from "../../assets/camera.png";
 import MicroPhone from "../../assets/mic.png";
 import EmojiPicker from "emoji-picker-react";
+import { doc, fireDB, onSnapshot } from "../../firebase/FirebaseConfig";
 
 const Chat = () => {
+  const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const endRef = useRef(null);
 
-
   /// last chat view
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  },[]);
-  console.log(text);
+  }, []);
+
+  useEffect(() => {
+    const unSub = onSnapshot(
+      doc(fireDB, "chats", "DLOAZe0Ot8NwGayarXYB"),
+      (res) => {
+        setChat(res.data());
+      }
+    );
+    return () => {
+      unSub();
+    };
+  }, []);
+  console.log(chat, "<<< chats from chats")
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
