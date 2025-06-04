@@ -10,12 +10,16 @@ import Camera from "../../assets/camera.png";
 import MicroPhone from "../../assets/mic.png";
 import EmojiPicker from "emoji-picker-react";
 import { doc, fireDB, onSnapshot } from "../../firebase/FirebaseConfig";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const endRef = useRef(null);
+
+   const chatStore = useSelector((state) => state.chatSlice);
+   console.log(chatStore, "<< <<< chat Store")
 
   /// last chat view
   useEffect(() => {
@@ -24,7 +28,7 @@ const Chat = () => {
 
   useEffect(() => {
     const unSub = onSnapshot(
-      doc(fireDB, "chats", "DLOAZe0Ot8NwGayarXYB"),
+      doc(fireDB, "chats", chatId),
       (res) => {
         setChat(res.data());
       }
@@ -33,7 +37,7 @@ const Chat = () => {
       unSub();
     };
   }, []);
-  console.log(chat, "<<< chats from chats")
+  console.log(chat, "<<< chats from chats jawaad")
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);

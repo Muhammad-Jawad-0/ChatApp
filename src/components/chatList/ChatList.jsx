@@ -6,6 +6,7 @@ import Avatar from "../../assets/avatar.png";
 import { useEffect, useState } from "react";
 import AddUser from "./addUser/AddUser";
 import { useSelector } from "react-redux";
+import { changeChat, changeBlock } from "../../redux/chatSlice";
 import {
   collection,
   doc,
@@ -20,6 +21,7 @@ const ChatList = () => {
   const [chats, setChats] = useState([]);
 
   const userInfo = useSelector((state) => state.currentUser.currentUser);
+  // const chatStore = useSelector((state) => state.chatSlice.currentUser);
 
   console.log(userInfo, "<< userInfo");
   console.log(chats, "<< chats");
@@ -66,6 +68,10 @@ const ChatList = () => {
     };
   }, [userInfo?.id]);
 
+  const handleSelect = async (chat) => {
+    changeChat(chat.chatId, chat.user);
+  };
+
   return (
     <div className="chatList">
       <div className="search">
@@ -81,8 +87,8 @@ const ChatList = () => {
         />
       </div>
 
-      {chats.map((v, i) => (
-        <div className="item" key={v.chatId}>
+      {chats.map((v) => (
+        <div className="item" key={v.chatId} onClick={() => handleSelect(v)}>
           <img src={v.user.avatar || Avatar} alt="" />
           <div className="text">
             <span>{v.user.username}</span>
