@@ -3,19 +3,48 @@ import Avatar from "../../assets/avatar.png";
 import ArrowUp from "../../assets/arrowup.png";
 import ArrowDown from "../../assets/arrowDown.png";
 import Download from "../../assets/download.png";
-import {auth} from "../../firebase/FirebaseConfig"
+import {
+  auth,
+  doc,
+  fireDB,
+  updateDoc,
+  arrayUnion,
+} from "../../firebase/FirebaseConfig";
 import { toast } from "react-toastify";
+import { useChatStore } from "../../lib/chatStore";
+import { useUserStore } from "../../lib/userStore";
+import { arrayRemove } from "firebase/firestore";
 
 const Detail = () => {
   const logoutFunc = () => {
-    auth.signOut()
-    toast.error("Logout Sucessfully")
-  }
+    auth.signOut();
+    toast.error("Logout Sucessfully");
+  };
+
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } =
+    useChatStore();
+
+  const { currentUser } = useUserStore();
+
+  const handleBlock = async () => {
+    if (!user) return;
+
+    const userDocRef = doc(fireDB, "users", currentUser.id);
+
+    try {
+      await updateDoc(userDocRef, {
+        blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+      });
+      changeBlock();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="detail">
       <div className="user">
-        <img src={Avatar} alt="" />
-        <h2>Muhammad Jawad</h2>
+        <img src={user?.avatar || Avatar} alt="" />
+        <h2>{user?.username}</h2>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
       <div className="info ">
@@ -116,8 +145,16 @@ const Detail = () => {
           </div>
         </div>
 
-        <button>Block User</button>
-        <button className="logout" onClick={() => logoutFunc()}>Logout</button>
+        <button onClick={() => handleBlock()}>
+          {isCurrentUserBlocked
+            ? "You Are Blocked!"
+            : isReceiverBlocked
+            ? "User blocked"
+            : "Block User"}
+        </button>
+        <button className="logout" onClick={() => logoutFunc()}>
+          Logout
+        </button>
       </div>
     </div>
   );

@@ -6,41 +6,48 @@ import Login from "./components/login/Login";
 import Notification from "./components/notification/Notification";
 import { useEffect, useState } from "react";
 import { auth, onAuthStateChanged } from "./firebase/FirebaseConfig";
-import { useSelector, useDispatch } from "react-redux";
-import { fatchUserInfo } from "./redux/userSlice";
+// import { useSelector, useDispatch } from "react-redux";
+// import { fatchUserInfo } from "./redux/userSlice";
+import { useUserStore } from "./lib/userStore";
+import { useChatStore } from "./lib/chatStore";
 
 function App() {
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
   // const user = false;
-  const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.currentUser.currentUser);
+  // const dispatch = useDispatch();
+  // const userInfo = useSelector((state) => state.currentUser.currentUser);
+  // const userInfoFunc = (id) => {
+  //   try {
+  //     const userInfo = dispatch(fatchUserInfo(id));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const userInfoFunc = (id) => {
-    try {
-      const userInfo = dispatch(fatchUserInfo(id));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { currentUser, isLoading, fetchUserInfo } = useUserStore();
+  const { chatId } = useChatStore();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
-      userInfoFunc(user?.uid);
-      setUser(user);
+      fetchUserInfo(user?.uid);
     });
 
     return () => {
       unsub();
     };
-  }, [fatchUserInfo]);
+  }, [fetchUserInfo]);
+
+  console.log(currentUser, "<<<< current User");
+
+  if (isLoading) return <div className="loading">Loading...</div>;
 
   return (
     <div className="container">
-      {user ? (
+      {currentUser ? (
         <>
           <List />
-          <Chat />
-          <Detail />
+          {chatId && <Chat />}
+          {chatId && <Detail />}
         </>
       ) : (
         <>

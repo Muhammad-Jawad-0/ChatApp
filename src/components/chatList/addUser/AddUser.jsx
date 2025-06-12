@@ -13,11 +13,15 @@ import {
   where,
 } from "../../../firebase/FirebaseConfig";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import {useUserStore} from "../../../lib/userStore"
+// import { useSelector } from "react-redux";
 
 const AddUser = () => {
-  const userInfo = useSelector((state) => state.currentUser.currentUser);
+  // const userInfo = useSelector((state) => state.currentUser.currentUser);
+   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   const [user, setUser] = useState(null);
+
+
   const handleSearch = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -51,12 +55,12 @@ const AddUser = () => {
         chats: arrayUnion({
           chatId: newChatRef.id,
           lastMessage: "",
-          receiverId: userInfo?.id,
+          receiverId: currentUser?.id,
           updatedAt: Date.now(),
         }),
       });
 
-      await updateDoc(doc(userChatsRef, userInfo.id), {
+      await updateDoc(doc(userChatsRef, currentUser.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
           lastMessage: "",
